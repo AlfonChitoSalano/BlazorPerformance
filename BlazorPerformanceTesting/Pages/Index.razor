@@ -1,0 +1,57 @@
+﻿@page "/"
+
+<h2>Performance Testing!</h2>
+
+<div>
+    <button class="btn btn-primary" onclick="@Draw" style="width: 300px">
+        Draw
+    </button>
+
+    <button class="btn btn-primary" onclick="@DrawUsingMarkUpString" style="width: 300px; margin-left: 5px;">
+        Draw using MarkupString
+    </button>
+</div>
+
+<div>
+    <p>
+        &nbsp;
+    </p>
+</div>
+
+<div>
+    @if (_isDraw)
+    {
+        ++_counter;
+
+        <p>
+            <b>This is how we add inner HTML and we won't convert a plain text to HTML markup.</b>
+        </p>
+
+        <div>
+            @using (new ExecutionTimeLogger($"Draw {_counter}."))
+            {
+                for (var i = 0; i < 5000; ++i)
+                {
+                    var divSizeInPx = $"{_random.Next(50, 150)}px";
+
+                    <div style="height: @divSizeInPx; width: @divSizeInPx;overflow:hidden; margin:1px;border:1px solid #000;padding:2px;float:left">
+                        @TextString
+                    </div>
+                }
+            }
+        </div>
+
+        _isDraw = false;
+    }
+</div>
+
+<div>
+    @if (_isDrawUsingMarkUp && !string.IsNullOrEmpty(_markUpElements))
+    {
+        <p>
+            <b>Converting plain text to HTML elements using MarkupString is an expensive operation. We won't code like this.</b>
+        </p>
+        
+        <div>@((MarkupString)_markUpElements)</div>
+    }
+</div>
