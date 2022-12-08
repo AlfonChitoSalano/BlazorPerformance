@@ -17,7 +17,6 @@ namespace BlazorPerformanceTesting
         public void Dispose()
         {
             var message = _methodName + "() took " + _stopwatch.ElapsedMilliseconds + " ms.";
-            Debug.WriteLine(message);
             Console.WriteLine(message);
             GC.SuppressFinalize(this);
         }
